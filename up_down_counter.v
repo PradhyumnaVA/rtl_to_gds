@@ -1,21 +1,6 @@
-// Code your design here
-// short function to determine the output port width based on N
-
-/*
-* `define LOG2(x) \
-   (x < 2) ? 1 : \
-   (x < 4) ? 2 : \
-   (x < 8) ? 3 : \
-   (x < 16) ? 4 : \
-   (x < 32) ? 5 : \
-   (x < 64) ? 6 : \
-   (x < 128) ? 7 : \
-   (x < 256) ? 8 : 16
-*/
-
 module up_down_counter
 #(
-    parameter N = 10,
+    parameter N = 6,
     parameter WIDTH = (N < 2) ? 1 :
                       (N < 4) ? 2 :
                       (N < 8) ? 3 :
@@ -33,7 +18,7 @@ module up_down_counter
 	input i_up_down,
 
 	// Output
-	output reg [WIDTH-1:0]o_Q
+	output [WIDTH-1:0]o_Q
 );
 
 // register 
@@ -56,10 +41,7 @@ assign o_Q = (i_en)?(count):(o_Q);
 // Synchronous state transition, along with asynchronous reset logic 
 always@(posedge i_clk, posedge i_rst) begin
 	if(i_rst) Current_state <= INITIAL;
-	else begin
-      Current_state <= Next_state;
-//       o_Q <= count;
-end
+	else Current_state <= Next_state;
 end
   
 // Conditional State transition
@@ -73,13 +55,13 @@ always@(*) begin
 		UP : begin
 		       if(!i_up_down) Next_state = DOWN;
 	       	       else if(!i_en) Next_state = HOLD;
-          else if(count==(N-2)) Next_state = WRAP;
+          		else if(count==(N-2)) Next_state = WRAP;
        	        end
 
 		DOWN : begin
 		       if(i_up_down) Next_state = UP;
 	       	       else if(!i_en) Next_state = HOLD;
-          else if((count==1) || (count==0)) Next_state = WRAP;
+          		else if((count==1) || (count==0)) Next_state = WRAP;
        	        end
 
 		HOLD : begin
@@ -107,8 +89,8 @@ always@(posedge i_clk, posedge i_rst) begin
 		HOLD : count <= count;
 
 		WRAP : begin
-          if(!i_up_down) count <= N-1;
-          else if(i_up_down) count <= 0;
+          		if(!i_up_down) count <= N-1;
+          		else if(i_up_down) count <= 0;
 		end
 	endcase
   end

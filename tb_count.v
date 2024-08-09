@@ -7,7 +7,7 @@ reg i_clk,
      i_en,
      i_up_down;
 
-  wire [3:0]o_Q;
+  wire [2:0]o_Q;
 
 up_down_counter DUT (
 	.i_clk(i_clk),
