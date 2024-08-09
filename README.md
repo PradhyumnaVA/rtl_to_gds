@@ -1,8 +1,6 @@
 # rtl_to_gds
 
-# Project Name
-
-**Brief description:** A short paragraph explaining what the project does.
+**Brief description:** Learning RTL to GDSII flow using Mod-N conditional counter design
 
 ---
 
@@ -14,8 +12,14 @@
 
 ## Introduction
 
-Mod-N conditional counter is implementated using verilog. Mod-6 is taken as example to conduct functional verification of the design.
+Mod-N conditional counter is implementated using verilog. Mod-6 counter is taken as example to conduct functional verification of the design. 
+Here is the logic design for the circuit made using Logisim.
+
+![Alt text](path/to/image.png)
+
+Here is the RTL design.
 
 [up_down_counter.v](up_down_counter.v)
 
+Wrote a test bem
 ---
