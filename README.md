@@ -13,13 +13,18 @@
 ## Introduction
 
 Mod-N conditional counter is implementated using verilog. Mod-6 counter is taken as example to conduct functional verification of the design. 
-Here is the logic design for the circuit made using Logisim.
+The logic design for the circuit made using Logisim.
 
-![Alt text](Mod-6_conditional_counter.png)
---
-Here is the RTL design.
+- Logic design
+![image](/images/Mod-6_conditional_counter.png)
 
-[up_down_counter.v](up_down_counter.v)
+- RTL design : 
+[up_down_counter.v](/RTL/up_down_counter.v)
 
-test bench
----
+- Test bench : 
+[tb_count.v](/RTL/tb_count.v)
+
+- Simulation result : 
+![image](/images/modN_counter_waveform.png)
+
+
