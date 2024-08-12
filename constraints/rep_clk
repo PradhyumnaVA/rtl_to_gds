@@ -1,0 +1,39 @@
+ 
+****************************************
+Report : clock timing
+        -type summary
+Design : up_down_counter
+Version: T-2022.03-SP5
+Date   : Mon Aug 12 15:28:09 2024
+****************************************
+
+  Clock: my_clk
+----------------------------------------------------------------------------
+  Maximum setup launch latency:
+      count_reg[1]/CLK                                       1.00      wr-+
+
+  Minimum setup capture latency:
+      count_reg[1]/CLK                                       1.00      wr-+
+
+  Minimum hold launch latency:
+      count_reg[1]/CLK                                       1.00      br-+
+
+  Maximum hold capture latency:
+      count_reg[1]/CLK                                       1.00      br-+
+
+  Maximum active transition:
+      count_reg[1]/CLK                                       0.00      wr-+
+
+  Minimum active transition:
+      count_reg[1]/CLK                                       0.00      wr-+
+
+  Maximum setup skew:
+      Current_state_reg[0]/CLK                                         wr-+
+      Current_state_reg[0]/CLK                               0.00      wr-+
+
+  Maximum hold skew:
+      Current_state_reg[0]/CLK                                         br-+
+      Current_state_reg[0]/CLK                               0.00      br-+
+----------------------------------------------------------------------------
+
+1

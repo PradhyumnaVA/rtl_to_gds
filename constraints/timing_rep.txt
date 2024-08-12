@@ -1,0 +1,49 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -nets
+        -max_paths 1
+        -transition_time
+        -capacitance
+Design : up_down_counter
+Version: T-2022.03-SP5
+Date   : Mon Aug 12 15:33:36 2024
+****************************************
+
+Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+Wire Load Model Mode: top
+
+  Startpoint: i_en (input port clocked by my_clk)
+  Endpoint: o_Q[0] (output port clocked by my_clk)
+  Path Group: my_clk
+  Path Type: max
+
+  Point                        Fanout       Cap     Trans      Incr       Path
+  -------------------------------------------------------------------------------
+  clock my_clk (rise edge)                                     0.00       0.00
+  clock network delay (ideal)                                  1.00       1.00
+  input external delay                                         2.00       3.00 r
+  i_en (in)                                          1.50      0.00       3.00 r
+  i_en (net)                     3         0.01                0.00       3.00 r
+  U49/Y (sky130_fd_sc_hd__clkinv_1)                  0.39      0.47       3.47 f
+  n35 (net)                      8         0.02                0.00       3.47 f
+  U47/Y (sky130_fd_sc_hd__o2bb2ai_1)                37.56     27.81      31.28 r
+  o_Q[0] (net)                   2         2.00                0.00      31.28 r
+  o_Q[0] (out)                                      37.56      0.00      31.28 r
+  data arrival time                                                      31.28
+
+  clock my_clk (rise edge)                                    10.00      10.00
+  clock network delay (ideal)                                  1.00      11.00
+  clock uncertainty                                           -0.25      10.75
+  output external delay                                       -2.50       8.25
+  data required time                                                      8.25
+  -------------------------------------------------------------------------------
+  data required time                                                      8.25
+  data arrival time                                                     -31.28
+  -------------------------------------------------------------------------------
+  slack (VIOLATED)                                                      -23.03
+
+
+1

@@ -1,0 +1,696 @@
+2.  Synopsys Commands                                        Command Reference
+                              report_clock_timing
+
+NAME
+       report_clock_timing
+              Reports the timing attributes of clock networks.
+
+SYNTAX
+       status report_clock_timing
+               -type report_type
+               [-clock clock_list]
+               [-from_clock from_clock_list]
+               [-to_clock to_clock_list]
+               [-to to_list]
+               [-from from_list]
+               [-setup] | [-hold]
+               [-launch] | [-capture]
+               [-rise] | [-fall]
+               [-min] | [-max]
+               [-nworst worst_entries]
+               [-greater_than lower_limit]
+               [-lesser_than upper_limit]
+               [-slack_lesser_than slack_upper_limit]
+               [-include_uncertainty_in_skew]
+               [-verbose]
+               [-show_clocks]
+               [-nosplit]
+               [-significant_digits digits]
+               [-nets]
+               [-capacitance]
+               [-attributes]
+               [-physical]
+               [-filter_false_paths]
+               [-variation]
+               [-scenarios scenario_list]
+               [-max]
+               [-fall]
+               [-capture]
+               [-hold]
+
+   Data Types
+       report_type           string
+       clock_list            list
+       from_clock_list       list
+       to_clock_list         list
+       to_list               list
+       from_list             list
+       worst_entries         integer
+       lower_limit           float
+       upper_limit           float
+       slack_upper_limit     float
+       digits                integer
+       scenario_list         list
+
+ARGUMENTS
+       -type report_type
+              Specifies  the  type  of report to be generated.  Allowed values
+              are as follows:
+
+               o transition - specifies a transition time report.
+
+               o latency - specifies a latency report.
+
+               o skew - specifies a skew report.  You cannot use the  -launch,
+                -capture,  -rise,  -fall, -min, -max, and -lesser_than options
+                if you specify a skew report.  You can use the -include_uncer-
+                tainty_in_skew option only in a skew, interclock_skew, or sum-
+                mary report.
+
+               o interclock_skew - specifies an interclock skew  report.   You
+                cannot  use  the  -launch, -capture, -rise, -fall, -min, -max,
+                and -lesser_than options if you  specify  an  interclock  skew
+                report.   You  can use the -include_uncertainty_in_skew option
+                only in a skew, interclock_skew, or summary report.
+
+               o summary - specifies a summary report  that  shows  the  worst
+                instances of transition time, latency, and skew over the clock
+                networks or subnetworks of interest.  You  can  use  only  the
+                -clock,  -to_list,  -from_list,  -include_uncertainty_in_skew,
+                -nosplit, and -significant_digits options  if  you  specify  a
+                summary report.
+
+              For non-summary reports, report entries are ordered with respect
+              to  the  specified  attribute  of  interest  (transition   time,
+              latency,  or  skew).  All skews reported are "local" skews.  For
+              an explanation of local skew, see the DESCRIPTION section.
+
+       -clock clock_list
+              Specifies a list of clock networks to be used in the report.   A
+              subreport  is produced for every clock in clock_list, unless you
+              additionally specify a to_list or a from_list that has  no  net-
+              work  intersection  with  a given clock.  In that case, the tool
+              drops these clocks from the clock_list and issues a warning.  By
+              default,  if  you  do  not specify clock_list, all clocks in the
+              design that have associated  clock  networks  are  used  in  the
+              report.
+
+       -from_clock from_clock_list
+              Specifies  a list of clock networks to be used as from-clocks in
+              the current interclock skew report.  This  option  can  be  used
+              only  in  an interclock skew report.  The report considers every
+              clock in the from_clock_list, unless you additionally specify  a
+              from_list  that  has no network intersection with a given clock.
+              In  that  case,  the  tool   drops   these   clocks   from   the
+              from_clock_list and issues a warning.  By default, if you do not
+              specify a from_clock_list, all clocks in the  design  that  have
+              associated clock networks are used as from-clocks in the report.
+
+       -to_clock to_clock_list
+              Specifies  a  list  of clock networks to be used as to-clocks in
+              the current interclock skew report.  This  option  can  be  used
+              only  in  an interclock skew report.  The report considers every
+              clock in the to_clock_list, unless you  additionally  specify  a
+              to_list that has no network intersection with a given clock.  In
+              that case, the tool drops these clocks  from  the  to_clock_list
+              and  issues  a  warning.   By  default,  if you do not specify a
+              to_clock_list, all clocks in the  design  that  have  associated
+              clock networks are used as to-clocks in the report.
+
+       -to to_list
+              Specifies  the list of sequential clock network pins or ports to
+              consider as to-pins in the current report.  If any named pin  is
+              not  the  clock pin of a sequential device (such as a sink pin),
+              the tool replaces that pin with all sequential clock pins in the
+              transitive  fanout of the named pin.  If there are no sequential
+              clock pins in the pin's transitive fanout, the  pin  is  dropped
+              from the list with a warning message.
+
+              For  skew reports, the from-to skew sense is defined by the pins
+              in the from_list and the to_list, respectively.  If the  to_list
+              is  not  specified,  by default all sink pins in the given clock
+              networks are used.  Thus, specifying to_list reduces  the  topo-
+              logical  scope  of  the report.  For transition time and latency
+              reports, from_list and to_list are concatenated and treated as a
+              single  list.   if neither list is specified, to_list is assumed
+              to be populated with all sink pins in the given clock networks.
+
+       -from from_list
+              Specifies a list of sequential clock network pins  or  ports  to
+              consider  as from-pins in the current report.  If a named pin is
+              not the clock pin of a sequential device, the tool replaces that
+              pin  with  all sequential clock pins in the transitive fanout of
+              the named pin.  If there are no sequential  clock  pins  in  the
+              pin's transitive fanout, the pin is dropped from the list with a
+              warning message.
+
+              For skew reports, the from-to skew sense is defined by the  pins
+              in   the  from_list  and  the  to_list,  respectively.   If  the
+              from_list is not specified, by default  all  sink  pins  in  the
+              given clock networks are used.  Specifying the from_list reduces
+              the topological scope of the report.  For  transition  time  and
+              latency  reports, the from_list and to_list are concatenated and
+              treated  as  a  single  list.   If  neither  is  specified,  the
+              from_list  is  assumed to be populated with all sink pins in the
+              given clock networks.
+
+       -setup Specifies that only the setup data path is to  be  used  in  the
+              report,  and  that  the  skews,  latencies,  or transition times
+              reported must correspond to those used by the report_timing com-
+              mand  in  the verification of setup constraints.  The -setup and
+              -hold options are mutually  exclusive.   If  neither  option  is
+              specified,  -setup  is  assumed.   This option cannot be used in
+              summary reports.
+
+       -launch
+              Specifies that only pins launching data are to be  used  in  the
+              report,  and  that  latencies  or transition times reported must
+              correspond to  those  used  by  the  report_timing  command  for
+              sequential  device  clock pins that are launching data.  In skew
+              reports, the role is implicit from the from-to  sense  indicated
+              by  the  from_list  and  the to_list.  In all other reports, the
+              -launch and -capture options are mutually exclusive.  If neither
+              option  is specified, -launch is assumed.  This option cannot be
+              used in summary or skew reports.
+
+       -rise  Specifies that the  active  transition  is  a  rising  edge  for
+              sequential  device  clock pins in the current report.  The -rise
+              and -fall options are mutually exclusive.  If neither option  is
+              specified,  the  active  transition  at  a latch or flip-flop is
+              deduced from the launch or capture role and the behavior of  the
+              sequential  device  itself.   This  option enables you to answer
+              "what if" questions regarding latency  and  transition  time  at
+              sequential  device  clock  pins.   This option cannot be used in
+              summary or skew reports.
+
+       -min   Specifies that the reports are to be sorted by minimum latencies
+              or  transition  times.   The  -min and -max options are mutually
+              exclusive.  If neither option  is  specified,  the  reports  are
+              sorted  in  the same manner as described for the -nworst option.
+              This option cannot be used in summary or skew reports.  To check
+              the  quality  of a balanced clock tree network, you can generate
+              two latency reports, one with -min and one with -max.
+
+       -nworst worst_entries
+              Specifies the number of worst report entries to be reported  per
+              clock  domain.  The default value is 1.  Entries are sorted with
+              respect to the attribute of interest (transition time,  latency,
+              or skew) specified with -type report_type.
+
+              The  worst  entries  are those most likely to cause a violation.
+              For example, if you request a latency report  using  -setup  and
+              -capture,  the  smallest  worst_entries  are  listed,  sorted in
+              ascending order, because small capture latencies for setup paths
+              are more likely to lead to a violation than large capture laten-
+              cies.  For skew reports, the worst entries always correspond  to
+              the  largest skews over the specified domain.  The above defini-
+              tion of "worst" can be overridden by use of  the  -min  or  -max
+              options.  This option cannot be used in summary reports.
+
+       -greater_than lower_limit
+              Specifies   that   only  those  entries  whose  attribute  value
+              (latency, transition time, or skew) is greater  (more  positive)
+              than  lower_limit are shown.  This option cannot be used in sum-
+              mary reports.
+
+       -lesser_than upper_limit
+              Specifies  that  only  those  entries  whose   attribute   value
+              (latency, transition time, or skew) is less (more negative) than
+              upper_limit are shown.  This option cannot be used in summary or
+              skew reports.
+
+       -slack_lesser_than slack_upper_limit
+              Specifies  that  only  those  entries  whose slack value is less
+              (more negative) than  slack_upper_limit  are  shown.   For  skew
+              report entries, slack is the worst slack over all paths launched
+              by the from-pin and captured by the to-pin.  For transition time
+              or  latency  report entries, slack is defined as the worst slack
+              of all paths either launched by a transition at the sink pin (if
+              -launch is used) or captured by a transition at the sink pin (if
+              -capture is used).
+
+              Using this filter can  greatly  increase  the  runtime  of  this
+              report.  However, when used with -capture, the effect on runtime
+              should be small, since the tool is able to make  use  of  cached
+              slack values to avoid expensive recomputation.  This option can-
+              not be used in summary reports.
+
+       -include_uncertainty_in_skew
+              Specifies that the user-defined uncertainty between the  sequen-
+              tial devices in a launch/capture pair is to be considered a com-
+              ponent of skew.  This option can be used only in skew  and  sum-
+              mary reports.
+
+       -verbose
+              Specifies  that  a  more  detailed  report  is  to be generated.
+              Instead of a single line per  pin,  verbose  reports  trace  the
+              entire  source-to-sink  path through a clock network to show how
+              the final reported attribute (skew, latency, or transition time)
+              was accumulated over the course of the path.  This option cannot
+              be used in summary reports.
+
+       -show_clocks
+              Specifies that the launching and  capturing  clocks  are  to  be
+              shown  for  every  interclock skew entry in the report.  This is
+              useful if the from_clock_list or the to_clock_list contains more
+              than one clock each.  This option can only be used in interclock
+              skew reports.
+
+       -nosplit
+              Prevents line splitting  and  facilitates  writing  software  to
+              extract information from the report output.  By default, most of
+              the design information is listed in fixed-width columns.  If the
+              information  in a given field exceeds the column width, the next
+              field begins on a new line, starting in the correct column.
+
+       -significant_digits digits
+              Specifies the number of digits after the  decimal  point  to  be
+              displayed for time values in the generated report.  Allowed val-
+              ues  are  0-13.   The  default  value  is  determined   by   the
+              report_default_significant_digits  variable, whose default value
+              is 2.  Use this option if you  want  to  override  the  default.
+              This  option  controls  only the number of digits displayed, not
+              the precision used internally for analysis.  For  analysis,  the
+              tool  uses the full precision of the platform's fixed-precision,
+              floating-point arithmetic capability.
+
+       -nets  Shows nets in verbose path traces.  The default is not  to  show
+              nets.   To  show  the  delay  for  the nets, use the -input_pins
+              option.  This option  is  similar  to  its  counterpart  in  the
+              report_timing command.
+
+       -capacitance
+              Shows  the  total  (lumped)  capacitance in verbose path traces.
+              The default is not to show capacitance.  For  each  driver  pin,
+              the  total  capacitance  driven  by the driver is displayed in a
+              column preceding both  incremental  path  delay  and  transition
+              time.   When  -nets  is specified, the capacitance is printed on
+              the lines with nets instead of the lines with driver pins.  This
+              option  is  similar to its counterpart in the report_timing com-
+              mand.
+
+       -attributes
+              Shows in verbose path traces the  attributes  specified  in  the
+              timing_report_attributes   variable.    The   current   set   of
+              attributes supported are  dont_touch,  dont_use,  map_only,  and
+              size_only  for  cells,  and  dont_touch  and ideal_net for nets.
+              This option is similar to its counterpart in  the  report_timing
+              command.
+
+       -physical
+              Shows the locations of the pins and the capacitive loads for the
+              pins and nets in verbose path traces.  The loads  are  displayed
+              as  a  pair of values of which the first is the wire capacitance
+              of the net and the second value is the total capacitance  driven
+              by  the  driver.   If the pin location cannot be determined, the
+              cell location is displayed, with  the  coordinates  in  microns.
+              This  option  is similar to its counterpart in the report_timing
+              command.
+
+       -filter_false_paths
+              Causes the command to eliminate false paths  from  consideration
+              during calculation of local register-to-register skew, resulting
+              in more accurate (less  pessimistic)  reporting  of  skew.   The
+              default behavior is to not eliminate false paths from considera-
+              tion.
+
+       -variation
+              Reports the mean and standard deviation of the statistical  time
+              increment  for  each  source-to-sink  path element in a -verbose
+              report.  This option works only when parametric  on-chip  varia-
+              tion  (POCV)  analysis  has  been  enabled  by  setting the tim-
+              ing_pocvm_enable_analysis variable to true.  By default, statis-
+              tical parameters are not reported.
+
+       -scenarios scenario_list
+              Reports  clock timing for a specified set of scenarios and skips
+              reporting of inactive scenarios.
+
+       -max   Specifies that the reports are to be sorted by maximum latencies
+              or  transition  times.   The  -min and -max options are mutually
+              exclusive.  If neither option  is  specified,  the  reports  are
+              sorted  in  the same manner as described for the -nworst option.
+              This option cannot be used in summary or skew reports.  To check
+              the  quality  of a balanced clock tree network, you can generate
+              two latency reports, one with -min and one with -max.
+
+       -fall  Specifies that the active  transition  is  a  falling  edge  for
+              sequential  device  clock pins in the current report.  The -rise
+              and -fall options are mutually exclusive.  If neither option  is
+              specified,  the  active  transition  at  a latch or flip-flop is
+              deduced from the launch or capture role and the behavior of  the
+              sequential  device  itself.   This  option enables you to answer
+              "what if" questions regarding latency  and  transition  time  at
+              sequential  device  clock  pins.   This option cannot be used in
+              summary or skew reports.
+
+       -capture
+              Specifies that only pins capturing data are to be  used  in  the
+              report, and that the latencies or transition times reported must
+              correspond to  those  used  by  the  report_timing  command  for
+              sequential  device  clock pins that are capturing data.  In skew
+              reports, the role is implicit from the from-to  sense  indicated
+              by  the  from_list  and  the to_list.  In all other reports, the
+              -launch and -capture options are mutually exclusive.  If neither
+              option  is specified, -launch is assumed.  This option cannot be
+              used in summary or skew reports.
+
+       -hold  Specifies that only the hold data path is  to  be  used  in  the
+              report,  and  that  the  skews,  latencies,  or transition times
+              reported must correspond to those used by the report_timing com-
+              mand  in  the  verification of hold constraints.  The -setup and
+              -hold options are mutually  exclusive.   If  neither  option  is
+              specified,  -setup  is  assumed.   This option cannot be used in
+              summary reports.
+
+DESCRIPTION
+       This command generates a report of clock  timing  information  for  the
+       current design.
+
+       Several reporting options allow you to examine skew, latency, and tran-
+       sition time attributes of a specified clock network  or  subnetwork  at
+       various levels of generality.  By default, the report displays the val-
+       ues of these attributes only at sink pins (that is, the clock  pins  of
+       sequential  devices)  of the clock network.  Use the -verbose option to
+       display source-to-sink path  traces.   If  you  specify  several  clock
+       domains,  report_clock_timing  generates  a separate subreport for each
+       domain.
+
+       At the highest level of abstraction is the summary style report,  which
+       provides  only  a  list  of maxima and minima of the skew, latency, and
+       transition time attributes over the given networks.  At a  lower  level
+       of  abstraction  are  the  transition,  latency, and skew type reports,
+       called list style reports, in which you can sort, filter,  and  display
+       the  worst set of sink pins in the given network with respect to a sin-
+       gle attribute of interest.  For skew reports, each report  entry  is  a
+       pair  of  sink  pins  and  their relative skew.  For transition time or
+       latency reports, each entry corresponds to a single sink pin.  The low-
+       est  level  of  abstraction  is  provided  by  the  verbose mode, which
+       replaces every sink pin in a list style  report  with  a  corresponding
+       source-to-sink path trace.
+
+       In  both  summary  and  list  style  reports,  the  right  column is an
+       attribute column.  Corresponding to each sink pin, the  character  sym-
+       bols in this column indicate the following:
+
+                 Symbol    Meaning
+                 ------    -------
+                 w         Worst-case operating condition
+                 b         Best-case operating condition
+                 r         Rising transition
+                 f         Falling transition
+                 p         Propagated clock to this pin
+                 i         Clock inversion to this pin
+                 e         Exception on this pin
+                 -         Launching transition
+                 +         Capturing transition
+
+       In  verbose  mode, back-annotations on path elements in the timing path
+       are indicated by a character symbol.  For definitions of these  charac-
+       ter symbols, see the man page for the report_timing command.
+
+       Skews reported by report_clock_timing are local skews only.  Local skew
+       exists from one sink pin to another only  as  long  as  the  associated
+       sequential  devices  are  connected  via a data path in the appropriate
+       from-to sense.  Note that even if all data paths between the sequential
+       devices  are  false  because of user-defined exceptions, the skew still
+       qualifies as local skew if the devices are connected topologically.
+
+   Multicorner-Multimode Support
+       By default, this command uses information from  the  current  scenario.
+       You can select different scenarios by using the -scenarios option.
+
+EXAMPLES
+       The following example shows a typical summary style report:
+
+         prompt> report_clock_timing -type summary
+
+         ****************************************
+         Report : clock timing
+                 -type summary
+                 -nworst 1
+         Design : xor_testcase
+         Version: W-2004.12
+         Date   : Tue Nov 20 06:17:33 2004
+         ****************************************
+
+           Clock: CK1
+         ----------------------------------------------------------------------------
+           Maximum setup launch latency:
+               flop9/CP                                               3.08      rp-+
+
+           Minimum setup capture latency:
+               or2_3/B                                                1.15      fpi-+
+
+           Minimum hold launch latency:
+               or2_3/B                                                1.15      fpi-+
+
+           Maximum hold capture latency:
+               flop9/CP                                               3.08      rp-+
+
+           Maximum active transition:
+               or2_3/B                                                0.20      fpi-+
+
+           Minimum active transition:
+               or2_3/B                                                0.09      fpi-+
+
+           Maximum setup skew:
+               flop9/CP                                                         rp-+
+               flop10/CP                                              0.87      rp-+
+
+           Maximum hold skew:
+               flop9/CP                                                         rp-+
+               flop10/CP                                              -0.21     rp-+
+         ----------------------------------------------------------------------------
+
+       The  following example displays the five worst setup skews in the clock
+       network of CLK1, taking uncertainty into account:
+
+         prompt> report_clock_timing -clock CLK1 -type skew -setup \
+            -nworst 5 -include_uncertainty_in_skew
+
+         ****************************************
+         Report : clock timing
+                 -type skew
+                 -nworst 5
+                 -setup
+                 -include_uncertainty_in_skew
+         Design : multi_domain
+         Version: W-2004.12
+         Date   : Tue Nov 20 06:49:19 2004
+         ****************************************
+
+           Clock: CLK1
+
+           Clock Pin                              Latency   Uncert    Skew
+         ----------------------------------------------------------------------------
+           f2_2/CP                                6.11                          rp-+
+           f2_1/CP                                2.01      0.11      4.21      fp-+
+
+           l3_2/G                                 4.10                          rpi-
+           f1_2/CP                                1.00      0.22      3.32      rpi-+
+
+           l2_2/G                                 4.11                          rp-
+           f1_2/CP                                1.00      0.12      3.23      rpi-+
+
+           f2_2/CP                                6.11                          rp-+
+           l3_3/G                                 3.01      0.11      3.21      rp-
+
+           l1_3/G                                 5.11                          rp-
+           f2_1/CP                                2.01      0.11      3.21      fp-+
+         ----------------------------------------------------------------------------
+
+       The following example displays the five worst launching  latencies  for
+       hold paths in the clock network of CLK2:
+
+         prompt> report_clock_timing -clock CLK2 -hold -launch -nworst 5 \
+            -type latency
+
+         ****************************************
+         Report : clock timing
+                 -type latency
+                 -launch
+                 -nworst 5
+                 -hold
+         Design : multi_domain
+         Version: W-2004.12
+         Date   : Tue Nov 20 06:55:56 2004
+         ****************************************
+
+           Clock: CLK2
+
+                                                        --- Latency ---
+           Clock Pin                    Trans     Source    Network   Total
+         ----------------------------------------------------------------------------
+           f1_2/CP                      0.04      0.00      1.00      1.00      rpi-+
+           f1_3/CP                      0.00      0.01      1.00      1.01      fp-+
+           f2_1/CP                      0.01      0.01      2.00      2.01      rp-+
+           f1_1/CP                      0.00      0.00      3.00      3.00      rpi-+
+           f3_2/CP                      0.00      0.00      3.00      3.00      fpi-+
+         ----------------------------------------------------------------------------
+
+       The  following  example  demonstrates  how  to request a verbose report
+       showing the worst local skew from f2_2/CP to any other sink pin:
+
+         prompt> report_clock_timing -type skew -verbose -from f2_2/CP
+
+         ****************************************
+         Report : clock timing
+                 -type skew
+                 -verbose
+                 -nworst 1
+                 -setup
+         Design : multi_domain
+         Version: W-2004.12
+         Date   : Tue Nov 20 07:00:56 2004
+         ****************************************
+
+           Clock: CLK1
+
+           Startpoint: f2_2 (rising edge-triggered flip-flop clocked by CLK1)
+           Endpoint: f2_1 (rising edge-triggered flip-flop clocked by CLK1)
+
+           Point                               Trans       Incr       Path
+           ------------------------------------------------------------------
+           clock source latency                            0.11       0.11
+           clk2 (in)                            0.00       0.00       0.11 r
+           az_1/Z (B1I)                         0.09       1.00 H     1.11 r
+           az_2/Z (B1I)                         0.13       1.00 H     2.11 r
+           bf2_2_1/Z (B1I)                      0.02       1.00 H     3.11 r
+           if2_2_1/Z (IVA)                      0.44       1.00 H     4.11 f
+           bf2_2_2/Z (B1I)                      0.01       1.00 H     5.11 f
+           if2_2_2/Z (IVA)                      0.13       1.00 H     6.11 r
+           f2_2/CP (FD1)                        0.13       0.00       6.11 r
+           startpoint clock latency                                   6.11
+
+           clock source latency                            0.01       0.01
+           clk2 (in)                            0.00       0.00       0.01 r
+           az_1/Z (B1I)                         0.02       1.00 H     1.01 r
+           az_3/Z (B1I)                         0.01       1.00 H     2.01 r
+           f2_1/CP (FD1)                        0.01       0.00       2.01 r
+           endpoint clock latency                                     2.01
+           ------------------------------------------------------------------
+           startpoint clock latency                                   6.11
+           endpoint clock latency                                    -2.01
+           ------------------------------------------------------------------
+           skew                                                       4.10
+
+       The following example traces the two worst launch  latencies  for  hold
+       paths in the clock network of CLK1:
+
+         prompt> report_clock_timing -type latency -hold -verbose \
+            -nworst 2 -clock CLK1
+
+         ****************************************
+         Report : clock timing
+                 -type latency
+                 -verbose
+                 -launch
+                 -nworst 2
+                 -hold
+         Design : multi_domain
+         Version: W-2004.12
+         Date   : Tue Nov 20 07:14:28 2004
+         ****************************************
+
+           Clock: CLK1
+
+           Endpoint: f1_2 (rising edge-triggered flip-flop clocked by CLK1')
+
+           Point                               Trans       Incr       Path
+           ------------------------------------------------------------------
+           clock source latency                            0.00       0.00
+           clk1 (in)                            0.00       0.00       0.00 f
+           if1_2_1/Z (IVA)                      0.04       1.00 H     1.00 r
+           f1_2/CP (FD1)                        0.04       0.00       1.00 r
+           total clock latency                                        1.00
+
+           Endpoint: f1_3 (rising edge-triggered flip-flop clocked by CLK1)
+
+           Point                               Trans       Incr       Path
+           ------------------------------------------------------------------
+           clock source latency                            0.01       0.01
+           clk1 (in)                            0.00       0.00       0.01 r
+           bf1_3_1/Z (B1I)                      0.00       1.00 H     1.01 r
+           f1_3/CP (FD1)                        0.00       0.00       1.01 r
+           total clock latency                                        1.01
+
+       The  following example makes use of a slack filter to display the worst
+       three skews between latches whose latch-to-latch paths are violating:
+
+         prompt> report_clock_timing -type skew -nworst 3 \
+            -slack_lesser_than 0.0
+
+         ****************************************
+         Report : clock timing
+                 -type skew
+                 -slack_lesser_than 0.00
+                 -nworst 3
+                 -setup
+         Design : multi_domain
+         Version: W-2004.12
+         Date   : Fri Dec 14 09:11:05 2004
+         ****************************************
+
+           Clock: CLKA
+
+           Clock Pin                    Latency    CRP      Skew      Slack
+         ----------------------------------------------------------------------------
+           f2_2/CP                      6.01                                    rp-+
+           f2_1/CP                      2.11      -0.03     3.87      -1.49     rp-+
+
+           l2_2/G                       4.01                                    rp-
+           f1_2/CP                      1.10      -0.21     2.70      -6.64     rpi-+
+
+           l1_3/G                       5.01                                    rp-
+           f2_1/CP                      2.11      -0.32     2.58      -1.63     rp-+
+         ----------------------------------------------------------------------------
+
+       The following example requests the two largest setup  skews  for  paths
+       both  launched  and  captured  by  any clock networks in the $my_clocks
+       variable:
+
+         prompt> report_clock_timing -type interclock_skew \
+            -from_clock $my_clocks -to_clock $my_clocks \
+            -nworst 2 -include_uncertainty_in_skew -show_clocks
+
+         ****************************************
+         Report : clock timing
+                  -type interclock_skew
+                  -nworst 100
+                  -setup
+                  -include_uncertainty_in_skew
+                  -show_clocks
+         Design : my_design
+         Version: W-2004.12
+         Date   : Thu May  2 10:55:20 2004
+         ****************************************
+
+           Number of startpoint pins   : 907
+           Number of endpoint pins     : 907
+           Number of startpoint clocks : 5
+           Number of endpoint clocks   : 5
+
+           Clock Pin                              Latency   Uncert    Skew
+         ----------------------------------------------------------------------------
+           orig_clk
+           orig_if/ram_pdp1/FFB35/CK              1016.72                       rp-+
+           dcd_ram/ram_clk
+           dcd_ram/dcd_ram/RAM/CKRB               149.60    195.00    1062.12   rp-+
+
+           comp_clk
+           comp_if/c_port_if/edge_trig_reg/CK     1400.42                       rp-+
+           comp_clk
+           comp_if/c_port_if/posi/iq_reg/CK       1159.09   199.00    440.34    rp-+
+         ----------------------------------------------------------------------------
+
+SEE ALSO
+       report_clock(2)
+       report_timing(2)
+       set_clock_uncertainty(2)
+       report_default_significant_digits(3)
+       timing_pocvm_enable_analysis(3)
+       timing_remove_clock_reconvergence_pessimism(3)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.

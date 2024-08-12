@@ -1,0 +1,41 @@
+ 
+****************************************
+Report : area
+Design : up_down_counter
+Version: T-2022.03-SP5
+Date   : Mon Aug 12 14:52:29 2024
+****************************************
+
+Information: Updating design information... (UID-85)
+Information: Timing loop detected. (OPT-150)
+	U45/A1 U45/X 
+Information: Timing loop detected. (OPT-150)
+	U46/A2_N U46/Y 
+Warning: Disabling timing arc between pins 'A1' and 'X' on cell 'U45'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'A2_N' and 'Y' on cell 'U46'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'A2_N' and 'Y' on cell 'U47'
+         to break a timing loop. (OPT-314)
+Library(s) Used:
+
+    sky130_fd_sc_hd__tt_025C_1v80 (File: /home/student/cadWorkDir/sky130RTLDesignAndSynthesisWorkshop-main/DC_WORKSHOP/lib/sky130_fd_sc_hd__tt_025C_1v80.db)
+
+Number of ports:                            7
+Number of nets:                            51
+Number of cells:                           47
+Number of combinational cells:             41
+Number of sequential cells:                 6
+Number of macros/black boxes:               0
+Number of buf/inv:                         10
+Number of references:                      20
+
+Combinational area:                232.723196
+Buf/Inv area:                       40.038399
+Noncombinational area:             150.144001
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (No wire load specified)
+
+Total cell area:                   382.867197
+Total area:                 undefined
+1

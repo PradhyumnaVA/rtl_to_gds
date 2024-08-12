@@ -1,0 +1,50 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -nets
+        -max_paths 1
+        -transition_time
+        -capacitance
+Design : up_down_counter
+Version: T-2022.03-SP5
+Date   : Mon Aug 12 15:34:39 2024
+****************************************
+
+Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+Wire Load Model Mode: top
+
+  Startpoint: count_reg[2]
+              (rising edge-triggered flip-flop clocked by my_clk)
+  Endpoint: count_reg[2]
+            (rising edge-triggered flip-flop clocked by my_clk)
+  Path Group: my_clk
+  Path Type: min
+
+  Point                                       Fanout       Cap     Trans      Incr       Path
+  ----------------------------------------------------------------------------------------------
+  clock my_clk (rise edge)                                                    0.00       0.00
+  clock network delay (ideal)                                                 1.00       1.00
+  count_reg[2]/CLK (sky130_fd_sc_hd__dfrtp_1)                       0.00      0.00       1.00 r
+  count_reg[2]/Q (sky130_fd_sc_hd__dfrtp_1)                         0.10      0.35       1.35 r
+  count[2] (net)                                3         0.01                0.00       1.35 r
+  U72/Y (sky130_fd_sc_hd__o31ai_1)                                  0.04      0.08       1.42 f
+  n40 (net)                                     1         0.00                0.00       1.42 f
+  count_reg[2]/D (sky130_fd_sc_hd__dfrtp_1)                         0.04      0.00       1.42 f
+  data arrival time                                                                      1.42
+
+  clock my_clk (rise edge)                                                    0.00       0.00
+  clock network delay (ideal)                                                 1.00       1.00
+  clock uncertainty                                                           0.25       1.25
+  count_reg[2]/CLK (sky130_fd_sc_hd__dfrtp_1)                                 0.00       1.25 r
+  library hold time                                                          -0.05       1.20
+  data required time                                                                     1.20
+  ----------------------------------------------------------------------------------------------
+  data required time                                                                     1.20
+  data arrival time                                                                     -1.42
+  ----------------------------------------------------------------------------------------------
+  slack (MET)                                                                            0.23
+
+
+1
