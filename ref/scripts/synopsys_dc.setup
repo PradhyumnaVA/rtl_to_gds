@@ -1,0 +1,10 @@
+# this file should also be named as .synopsys_dc.setup and kept in the
+# /home/student/ directory
+# thus whenever DC is invoked, the target and link libraries will be set
+
+set target_library /home/student/cadWorkDir/sky130RTLDesignAndSynthesisWorkshop-main/DC_WORKSHOP/lib/sky130_fd_sc_hd__tt_025C_1v80.db
+set link_library {* /home/student/cadWorkDir/sky130RTLDesignAndSynthesisWorkshop-main/DC_WORKSHOP/lib/sky130_fd_sc_hd__tt_025C_1v80.db}
+
+# in the 2nd command, {* }, this syntax is used because multiple libraries may 
+# already be loaded in DC's memory, we don't want to override them but instead
+# append our required lib to the bunch

@@ -1,0 +1,224 @@
+2.  Synopsys Commands                                        Command Reference
+                             set_clock_uncertainty
+
+NAME
+       set_clock_uncertainty
+              Specifies  the  uncertainty  (skew)  of the specified clock net-
+              works.
+
+SYNTAX
+       status set_clock_uncertainty
+               [object_list
+
+                | -from from_clock
+                | -rise_from rise_from_clock
+                | -fall_from fall_from_clock
+               -to to_clock
+                | -rise_to rise_to_clock
+                | -fall_to fall_to_clock]
+               [-rise]
+               [-fall]
+               [-setup]
+               [-hold]
+               uncertainty
+
+   Data Types
+       object_list         collection
+       from_clock          collection
+       rise_from_clock     collection
+       fall_from_clock     collection
+       to_clock            collection
+       rise_to_clock       collection
+       fall_to_clock       collection
+       uncertainty         float
+
+ARGUMENTS
+       object_list
+              Specifies the clocks, ports, or  pins  for  simple  uncertainty.
+              The  uncertainty  is  applied  either  to  the capturing latches
+              clocked by one of the  specified  clocks  or  to  the  capturing
+              latches  whose  clock pins are in the fanout of a specified port
+              or pin.
+
+              You must specify either this argument or a clock pair  with  the
+              -from/-rise_from/-fall_from  and  -to/-rise_to/-fall_to options;
+              you cannot specify both.
+
+       -from from_clock
+              Specifies the source clocks for interclock uncertainty.
+
+              You   must   specify   either   a   clock    pair    with    the
+              -from/-rise_from/-fall_from and -to/-rise_to/-fall_to options or
+              the object_list argument; you cannot specify both.
+
+       -rise_from rise_from_clock
+              Specifies that the uncertainty applies only to the  rising  edge
+              of the source clock.
+
+              You  can  use  only one of the -from, -rise_from, and -fall_from
+              options.
+
+       -fall_from fall_from_clock
+              Specifies that the uncertainty applies only to the falling  edge
+              of the source clock.
+
+              You  can  use  only one of the -from, -rise_from, and -fall_from
+              options.
+
+       -to to_clock
+              Specifies the destination clocks for interclock uncertainty.
+
+              You   must   specify   either   a   clock    pair    with    the
+              -from/-rise_from/-fall_from and -to/-rise_to/-fall_to options or
+              the object_list argument; you cannot specify both.
+
+       -rise_to rise_to_clock
+              Specifies that the uncertainty applies only to the  rising  edge
+              of the destination clock.
+
+              You can use only one of the -to, -rise_to, and -fall_to options.
+
+       -fall_to fall_to_clock
+              Specifies  that the uncertainty applies only to the falling edge
+              of the destination clock.
+
+              You can use only one of the -to, -rise_to, and -fall_to options.
+
+       -rise  Indicates that the uncertainty applies to only the  rising  edge
+              of the destination clock.
+
+              By default, the uncertainty applies to both the rising and fall-
+              ing edges.
+
+              This option is valid only for interclock uncertainty, and is now
+              obsolete.   Unless you need this option for backward-compatibil-
+              ity, use the -rise_to option instead.
+
+       -fall  Indicates that the uncertainty applies to only the falling  edge
+              of the destination clock.
+
+              By  default,  the uncertainty applies to both rising and falling
+              edges.
+
+              This option is valid only for interclock uncertainty, and is now
+              obsolete.   Unless you need this option for backward-compatibil-
+              ity, use the -fall_to option instead.
+
+       -setup Indicates that the uncertainty applies only to setup checks.
+
+              By default, the uncertainty  applies  to  both  setup  and  hold
+              checks.
+
+       -hold  Indicates that the uncertainty applies only to hold checks.
+
+              By  default,  the  uncertainty  applies  to  both setup and hold
+              checks.
+
+       uncertainty
+              Specifies a floating-point number that indicates the uncertainty
+              value.   Typically, clock uncertainty should be positive.  Nega-
+              tive uncertainty values are supported for  constraining  designs
+              with complex clock relationships.  Setting the uncertainty value
+              to a negative number could lead to  optimistic  timing  analysis
+              and should be used with extreme care.
+
+DESCRIPTION
+       This  command specifies the clock uncertainty (skew characteristics) of
+       the specified clock networks.  This command can specify  either  inter-
+       clock  uncertainty  or simple uncertainty.  For interclock uncertainty,
+       use the -from/-rise_from/-fall_from and  -to/-rise_to/-fall_to  options
+       to  specify  the  source  clock  and  the  destination clock; all paths
+       between these clocks receive the uncertainty value.  For simple  uncer-
+       tainty,  use  the object_list argument; the uncertainty value is either
+       to  the  capturing  latches  clocked  by  one  of  the  clocks  in  the
+       object_list  argument  or to the capturing latches whose clock pins are
+       in the fanout of a port or pin specified in the object_list argument.
+
+       Set the uncertainty to the worst  skew  expected  to  the  endpoint  or
+       between  the  clock domains.  You can increase the value to account for
+       additional margin for setup and hold.
+
+       When you specify interclock uncertainty, ensure that you specify it for
+       all  possible  interactions  of the clock domains.  For example, if you
+       specify paths from CLKA to CLKB and CLKB to CLKA, you must specify  the
+       uncertainty for both even if the values are the same.
+
+       Interclock  uncertainty is more specific than simple uncertainty.  If a
+       command that specifies interclock uncertainty conflicts with a  command
+       that  specifies  simple  uncertainty, the command that specifies inter-
+       clock uncertainty takes precedence.
+
+       If there is no applicable interclock uncertainty for a path, the  value
+       for simple uncertainty is used.
+
+       To  remove  the uncertainties set by the set_clock_uncertainty command,
+       use the remove_clock_uncertainty command.
+
+       To view clock uncertainty information, use the report_clock -skew  com-
+       mand.
+
+   Multicorner-Multimode Support
+       This command applies to the current scenario only.
+
+EXAMPLES
+       The  following example specifies that all paths leading to registers or
+       ports clocked by CLK have setup uncertainty of  0.65  and  hold  uncer-
+       tainty of 0.45:
+
+         prompt> set_clock_uncertainty -setup 0.65 [get_clocks CLK]
+         prompt> set_clock_uncertainty -hold 0.45 [get_clocks CLK]
+
+       The  following  example  specifies interclock uncertainties between the
+       PHI1 and PHI2 clock domains:
+
+         prompt> set_clock_uncertainty 0.4 -from PHI1 -to PHI1
+         prompt> set_clock_uncertainty 0.4 -from PHI2 -to PHI2
+         prompt> set_clock_uncertainty 1.1 -from PHI1 -to PHI2
+         prompt> set_clock_uncertainty 1.1 -from PHI2 -to PHI1
+
+       The following example specifies interclock  uncertainties  between  the
+       PHI1 and PHI2 clock domains with specific edges:
+
+         prompt> set_clock_uncertainty 0.4 -rise_from PHI1 -to PHI2
+         prompt> set_clock_uncertainty 0.4 -fall_from PHI2 -rise_to PHI2
+         prompt> set_clock_uncertainty 1.1 -from PHI1 -fall_to PHI2
+
+       The following example shows conflicting set_clock_uncertainty commands,
+       one for simple uncertainty and one  for  interclock  uncertainty.   The
+       interclock uncertainty value of 2 takes precedence.
+
+         prompt> set_clock_uncertainty 5 [get_clocks CLKA]
+         prompt> set_clock_uncertainty 2 \
+            -from [get_clocks CLKB] -to [get_clocks CLKA]
+
+       The  following  example specifies the uncertainty from CLKA to CLKB and
+       from CLKB to CLKA.  Notice that both must be specified even though  the
+       value is the same.
+
+         prompt> set_clock_uncertainty 2 \
+            -from [get_clocks CLKA] -to [get_clocks CLKB]
+         prompt> set_clock_uncertainty 2 \
+            -from [get_clocks CLKB] -to [get_clocks CLKA]
+
+       The  following  example  illustrates a situation in which simple uncer-
+       tainty is used when there is no applicable interclock uncertainty for a
+       path.   The  first command specifies a simple uncertainty of 5 for CLKA
+       paths, and the second command specifies an interclock uncertainty of  2
+       for paths from CLKB to CLKA.  If there are paths between CLKA and other
+       clocks (for example, CLKC, CLKD, and so on) for which interclock uncer-
+       tainty  has  not  been specifically defined, the simple uncertainty (in
+       this case, 5) is used.
+
+         prompt> set_clock_uncertainty 5 [get_clocks CLKA]
+
+         prompt> set_clock_uncertainty 2 \
+                 -from [get_clocks CLKB] -to [get_clocks CLKA]
+
+SEE ALSO
+       remove_clock_uncertainty(2)
+       report_clock(2)
+       set_clock_latency(2)
+       set_clock_transition(2)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.

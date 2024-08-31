@@ -1,0 +1,29 @@
+ 
+****************************************
+Report : clocks
+Design : lab8_circuit
+Version: T-2022.03-SP5
+Date   : Tue Aug 13 14:15:43 2024
+****************************************
+
+Attributes:
+    d - dont_touch_network
+    f - fix_hold
+    p - propagated_clock
+    G - generated_clock
+    g - lib_generated_clock
+
+Clock          Period   Waveform            Attrs     Sources
+--------------------------------------------------------------------------------
+MYCLK           10.00   {0 5}                         {clk}
+MYGEN_CLK       10.00   {0 5}               G         {out_clk}
+MYGEN_DIV_CLK   20.00   {0 10}              G         {out_div_clk}
+--------------------------------------------------------------------------------
+
+Generated     Master         Generated      Master         Waveform
+Clock         Source         Source         Clock          Modification
+--------------------------------------------------------------------------------
+MYGEN_CLK     clk            {out_clk}      MYCLK          divide_by(1)
+MYGEN_DIV_CLK clk            {out_div_clk}  MYCLK          divide_by(2)
+--------------------------------------------------------------------------------
+1

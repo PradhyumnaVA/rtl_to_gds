@@ -1,0 +1,95 @@
+2.  Synopsys Commands                                        Command Reference
+                             set_input_transition
+
+NAME
+       set_input_transition
+              Sets  the  max_transition_rise, max_transition_fall, min_transi-
+              tion_rise, or min_transition_fall attributes  to  the  specified
+              transition values on the specified input and inout ports.
+
+SYNTAX
+       status set_input_transition
+               transition
+               [-rise] [-fall] [-min] [-max]
+               port_list
+
+   Data Types
+       transition     float
+       port_list      collection
+
+ARGUMENTS
+       transition
+              Specifies  a nonnegative transition value to which the max_tran-
+              sition_rise,   max_transition_fall,    min_transition_rise    or
+              min_transition_fall  attributes  are  to  be set on the ports in
+              port_list. The transition is the transition time of a slope that
+              drives  the  port,  such  that  a  higher transition value means
+              longer delays. Thus, a transition of 0 is  infinite  transition,
+              or no delay between the ports and all that is connected to them.
+              transition must be  in  units  consistent  with  the  technology
+              library used during optimization.
+
+       -rise  -fall
+              Indicates  that  the rise or fall attributes of port_list are to
+              be set to transition. If neither is specified, both are  set  to
+              transition.
+
+       -min -max
+              Indicates that the transition value is to be applied for minimum
+              or maximum delay analysis. If no value is specified for  minimum
+              analysis, the maximum value is used.
+
+       port_list
+              Specifies a list of names of input or inout ports in the current
+              design, on which the transition value is to be set. If you spec-
+              ify  more  than  one  port, you must enclose the ports in either
+              quotes or braces ({}).
+
+DESCRIPTION
+       Sets the max_transition_rise, max_transition_fall,  min_transition_rise
+       or  min_transition_fall attributes to transition on specified input and
+       inout ports in the current design.
+
+       Note: The set_input_transition command removes any  corresponding  rise
+       or  fall  driving  cell attributes and rise or fall drive attributes on
+       the specified  ports.  If  you  want  a  fixed  transition  value,  use
+       set_input_transition,   otherwise,   use  set_driving_cell  instead  of
+       set_drive, if possible.
+
+       To view transition information on ports, use report_port -verbose.   To
+       remove  transition  attributes  from  ports,  use remove_attribute. The
+       reset_design command removes all attributes from  a  design,  including
+       the transition attributes.
+
+   Multicorner-Multimode Support
+       This command applies to the current scenario only.
+
+EXAMPLES
+       The  following example sets the maximum rise and fall transition values
+       of ports A, B, and C to 7.0.
+
+         prompt> set_input_transition 7.0 {A B C}
+
+       The following example sets the maximum rise and fall transition  values
+       of  all  input ports to 7 and sets the maximum rise transition value on
+       port B to 11.
+
+         prompt> set_input_transition 7 [all_inputs]
+         prompt> set_input_transition -rise 11 B
+
+       The following example sets the minimum fall transition value on port  C
+       to 13.
+
+         prompt> set_input_transition -fall -min 13.0 {C}
+
+SEE ALSO
+       all_inputs(2)
+       remove_attribute(2)
+       report_port(2)
+       reset_design(2)
+       set_drive(2)
+       set_driving_cell(2)
+       set_load(2)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.

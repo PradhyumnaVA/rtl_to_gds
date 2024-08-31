@@ -1,0 +1,69 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : port
+        -verbose
+Design : lab8_circuit
+Version: T-2022.03-SP5
+Date   : Fri Aug  2 16:18:06 2024
+****************************************
+
+
+                       Pin      Wire     Max     Max     Connection
+Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+--------------------------------------------------------------------------------
+IN_A           in      0.0000   0.0000   --      --      --         
+IN_B           in      0.0000   0.0000   --      --      --         
+clk            in      0.0000   0.0000   --      --      --         
+rst            in      0.0000   0.0000   --      --      --         
+OUT_Y          out     0.0000   0.0000   --      --      --         
+out_clk        out     0.0000   0.0000   --      --      --         
+
+
+              External  Max             Min                Min       Min
+              Number    Wireload        Wireload           Pin       Wire
+Port          Points    Model           Model              Load      Load
+--------------------------------------------------------------------------------
+IN_A               1      --              --              --        -- 
+IN_B               1      --              --              --        -- 
+clk                1      --              --              --        -- 
+rst                1      --              --              --        -- 
+OUT_Y              1      --              --              --        -- 
+out_clk            1      --              --              --        -- 
+
+                    Input Delay
+                  Min             Max       Related   Max
+Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+--------------------------------------------------------------------------------
+IN_A          1.00    1.00    5.00    5.00  my_clk    --    
+IN_B          1.00    1.00    5.00    5.00  my_clk    --    
+clk           --      --      --      --      --      -- 
+rst           --      --      --      --      --      -- 
+
+
+               Max Drive      Min Drive      Resistance    Min    Min       Cell
+Input Port    Rise    Fall   Rise    Fall   Max     Min    Cap    Fanout    Deg
+--------------------------------------------------------------------------------
+IN_A          --      --     --      --     --      --     --     --        -- 
+IN_B          --      --     --      --     --      --     --     --        -- 
+clk           --      --     --      --     --      --     --     --        -- 
+rst           --      --     --      --     --      --     --     --        -- 
+
+
+               Max Tran        Min Tran
+Input Port    Rise    Fall    Rise    Fall
+--------------------------------------------------------------------------------
+IN_A          0.30    0.30    0.10    0.10
+IN_B          0.30    0.30    0.10    0.10
+clk           --      --      --      -- 
+rst           --      --      --      -- 
+
+
+                    Output Delay
+                  Min             Max      Related  Fanout
+Output Port   Rise    Fall    Rise    Fall  Clock     Load
+--------------------------------------------------------------------------------
+OUT_Y         1.00    1.00    5.00    5.00  my_clk    0.00  
+out_clk       --      --      --      --      --      0.00
+
+1

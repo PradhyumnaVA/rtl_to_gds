@@ -1,0 +1,20 @@
+ 
+****************************************
+Report : transitive_fanout
+        -clock_tree
+Design : lab8_circuit
+Version: T-2022.03-SP5
+Date   : Tue Aug  6 16:02:55 2024
+****************************************
+
+The fanout network of source clk is as follows:
+
+Driver Pin       Load Pin          Type        Sense
+------------------------------------------------------------
+clk              REGB_reg/CLK      (net arc)   same
+clk              out_clk           (net arc)   same
+clk              REGC_reg/CLK      (net arc)   same
+clk              REGA_reg/CLK      (net arc)   same
+
+
+1

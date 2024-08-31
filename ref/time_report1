@@ -1,0 +1,46 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -nets
+        -max_paths 1
+        -transition_time
+Design : lab8_circuit
+Version: T-2022.03-SP5
+Date   : Tue Aug  6 15:56:33 2024
+****************************************
+
+Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+Wire Load Model Mode: top
+
+  Startpoint: REGC_reg (rising edge-triggered flip-flop clocked by my_clk)
+  Endpoint: OUT_Y (output port clocked by my_clk)
+  Path Group: my_clk
+  Path Type: min
+
+  Point                                       Fanout     Trans      Incr       Path
+  ------------------------------------------------------------------------------------
+  clock my_clk (rise edge)                                          0.00       0.00
+  clock network delay (ideal)                                       3.00       3.00
+  REGC_reg/CLK (sky130_fd_sc_hd__dfrtp_1)                 0.00      0.00       3.00 r
+  REGC_reg/Q (sky130_fd_sc_hd__dfrtp_1)                   0.04      0.34       3.34 f
+  REGC (net)                                    1                   0.00       3.34 f
+  U10/Y (sky130_fd_sc_hd__clkinv_1)                       2.75      1.93       5.27 r
+  OUT_Y (net)                                   1                   0.00       5.27 r
+  OUT_Y (out)                                             2.75      0.00       5.27 r
+  data arrival time                                                            5.27
+
+  clock my_clk (rise edge)                                          0.00       0.00
+  clock network delay (ideal)                                       3.00       3.00
+  clock uncertainty                                                 0.10       3.10
+  output external delay                                            -0.75       2.35
+  data required time                                                           2.35
+  ------------------------------------------------------------------------------------
+  data required time                                                           2.35
+  data arrival time                                                           -5.27
+  ------------------------------------------------------------------------------------
+  slack (MET)                                                                  2.92
+
+
+1

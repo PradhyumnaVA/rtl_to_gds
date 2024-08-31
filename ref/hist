@@ -1,0 +1,47 @@
+     1  get_ports
+     2  read_verilog ./verilog_files/lab8_circuit.v
+     3  link
+     4  compile_ultra
+     5  source scripts/generate_clock.tcl
+     6  get_clocks
+     7  source scripts/clock_delays.tcl
+     8  report_clocks
+     9  report_clock
+    10  report_clock
+    11  report_clock
+    12  report_clock
+    13  report_timing
+    14  report_timing > time_report
+    15  get_clocks
+    16  get_ports
+    17  source ./scripts/io_delay_model.tcl
+    18  report_timing
+    19  report_timing > time_report
+    20  source ./scripts/io_delay_model.tcl
+    21  report_timing > time_report1
+    22  source ./scripts/io_delay_model.tcl
+    23  report_timing > time_report1
+    24  source ./scripts/io_delay_model.tcl
+    25  report_timing > time_report1
+    26  source scripts/get_pins_direction.tcl
+    27  report_timing -from IN_A -to REGB_reg/Q -trans > time_report1
+    28  report_timing -from IN_A -to REGB_reg -trans > time_report1
+    29  report_timing -from IN_A  -trans -net > time_report1
+    30  report_timing -from IN_A  -trans -net -delay min > time_report1
+    31  report_timing -from REGA_reg/D  -trans -net -delay min > time_report1
+    32  report_timing -from REGA_reg/Q  -trans -net > time_report1
+    33  report_timing -from IN_A -to  REGA_reg/Q  -trans -net > time_report1
+    34  report_timing -from IN_A -to OUT_Y -trans -net > time_report1
+    35  report_timing -to OUT_Y -trans -net > time_report1
+    36  get_ports
+    37  source ./scripts/io_delay_model.tcl
+    38  source ./scripts/io_delay_model.tcl
+    39  report_timing -to OUT_Y -trans -net > time_report1
+    40  source ./scripts/io_delay_model.tcl
+    41  report_timing -to OUT_Y -trans -net > time_report1
+    42  source ./scripts/io_delay_model.tcl
+    43  report_timing -to OUT_Y -trans -net > time_report1
+    44  source ./scripts/io_delay_model.tcl
+    45  report_timing -to OUT_Y -trans -net -delay min> time_report1
+    46  report_timing -to OUT_Y -trans -net -delay min > time_report1
+    47  history > hist

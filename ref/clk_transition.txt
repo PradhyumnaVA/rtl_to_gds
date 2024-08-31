@@ -1,0 +1,105 @@
+2.  Synopsys Commands                                        Command Reference
+                             set_clock_transition
+
+NAME
+       set_clock_transition
+              Sets  the  transition  time  at the clock pins of all sequential
+              devices clocked by the specified ideal clocks.
+
+SYNTAX
+       status set_clock_transition
+               transition
+               [-rise | -fall]
+               [-min]
+               [-max]
+               clock_list
+
+   Data Types
+       transition     float
+       clock_list     collection
+
+ARGUMENTS
+       transition
+              Specifies the transition time at the clock pins of  the  sequen-
+              tial  devices  clocked  by  the  specified ideal clocks, in time
+              units of the technology library used during optimization.
+
+       -rise | -fall
+              Specifies whether the value applies to rising or falling transi-
+              tions at the clock pins of the sequential devices. If neither is
+              specified, both rising and falling clock  transitions  are  set.
+              If  you  specify  only  -rise or only -fall and do not specify a
+              transition time for the other type of  transition,  the  default
+              value, 0.0, applies to the other type of transition.
+
+       -min   Specifies that the value applies to minimum delay analysis only.
+              By default, the transition value applies  to  both  minimum  and
+              maximum delay analysis.
+
+       -max   Specifies that the value applies to maximum delay analysis only.
+              By default, the transition value applies  to  both  minimum  and
+              maximum delay analysis.
+
+       clock_list
+              Specifies  the  ideal  clocks  to  which  the  transition  value
+              applies.  The specified transition time applies to all  register
+              clock pins in the transitive fanout of each specified clock.
+
+DESCRIPTION
+       This  command explicitly specifies the transition time of clock signals
+       that reach the clock pins  of  sequential  devices  in  the  transitive
+       fanout of one or more ideal clocks.
+
+       This  command  is especially useful before layout, when clock trees are
+       incomplete and the clocks have ideal behavior. By default, ideal clocks
+       have  a  transition  time of zero. To get more accurate timing results,
+       specify an estimated nonzero transition time.
+
+       If you specify the name of a  propagated  clock  instead  of  an  ideal
+       clock,  the transition time value is ignored; the calculated transition
+       time is used instead. You should set clocks  to  be  propagated  clocks
+       only after the final clock trees are constructed.
+
+       The   command  sets  one  or  more  of  the  clock_transition_fall_max,
+       clock_transition_fall_min, clock_transition_rise_max, and clock_transi-
+       tion_rise_min attributes of the specified clock objects.
+
+       To  undo  the  effects  of  the  set_clock_transition  command, use the
+       remove_clock_transition, remove_attribute, or reset_design command.
+
+       To list all clock  transition  values  that  have  been  set,  use  the
+       report_clock -skew command.
+
+   Multicorner-Multimode Support
+       This command applies to the current scenario only.
+
+EXAMPLES
+       The  following  command sets both the rise and fall transition times to
+       0.75 on the clock pins of all sequential elements clocked by the  clock
+       named CLK1:
+
+         prompt> set_clock_transition 0.75 CLK1
+
+       The  following  command sets the fall transition time to 0.64 for maxi-
+       mum-delay analysis on the clock pins of all sequential elements clocked
+       by CLK1 and CLK2:
+
+         prompt> set_clock_transition 0.64 -fall -max {CLK1 CLK2}
+
+       The  following  command sets both the rise and fall transition times to
+       0.20 on the clock pins  of  all  sequential  elements  clock  by  ideal
+       clocks:
+
+         prompt> set_clock_transition 0.20 [all_clocks]
+
+SEE ALSO
+       all_clocks(2)
+       create_clock(2)
+       get_clocks(2)
+       remove_attribute(2)
+       report_clock(2)
+       remove_clock_transition(2)
+       reset_design(2)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.

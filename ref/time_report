@@ -1,0 +1,44 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : lab8_circuit
+Version: T-2022.03-SP5
+Date   : Tue Aug  6 13:01:41 2024
+****************************************
+
+Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+Wire Load Model Mode: top
+
+  Startpoint: IN_B (input port clocked by my_clk)
+  Endpoint: REGB_reg (rising edge-triggered flip-flop clocked by my_clk)
+  Path Group: my_clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock my_clk (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             3.00       3.00
+  input external delay                                    3.00       6.00 f
+  IN_B (in)                                               0.00       6.00 f
+  U11/Y (sky130_fd_sc_hd__nor2_1)                         0.48       6.48 r
+  U12/Y (sky130_fd_sc_hd__a21oi_1)                        0.06       6.55 f
+  REGB_reg/D (sky130_fd_sc_hd__dfrtp_1)                   0.00       6.55 f
+  data arrival time                                                  6.55
+
+  clock my_clk (rise edge)                               10.00      10.00
+  clock network delay (ideal)                             3.00      13.00
+  clock uncertainty                                      -0.50      12.50
+  REGB_reg/CLK (sky130_fd_sc_hd__dfrtp_1)                 0.00      12.50 r
+  library setup time                                     -0.19      12.31
+  data required time                                                12.31
+  --------------------------------------------------------------------------
+  data required time                                                12.31
+  data arrival time                                                 -6.55
+  --------------------------------------------------------------------------
+  slack (MET)                                                        5.76
+
+
+1

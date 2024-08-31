@@ -1,0 +1,80 @@
+2.  Synopsys Commands                                        Command Reference
+                               set_clock_jitter
+
+NAME
+       set_clock_jitter
+              Sets the duty-cycle jitter and/or the cycle clock jitter.
+
+SYNTAX
+       status set_clock_jitter
+               [-cycle cycle_to_cycle_jitter]
+               [-duty_cycle duty_cycle_jitter]
+               -clocks clock_list
+
+   Data Types
+       cycle_to_cycle_jitter     float
+       duty_cycle_jitter         float
+       clock_list                list
+
+ARGUMENTS
+       -cycle cycle_to_cycle_jitter
+              Specifies the cycle-to-cycle jitter on the clock.
+
+       -duty_cycle duty_cycle_jitter
+              Specifies the duty-cycle jitter on the clock.
+
+DESCRIPTION
+       This  command  specifies  the  cycle-to-cycle jitter and the duty-cycle
+       jitter on a primary master clock(a clock that is not a generated  clock
+       itself),  or  a  generated  clock that is defined with the -multiply_by
+       option.
+
+       Cycle-to-cycle jitter models the variation between the edges  that  are
+       in-phase.  In  other  words,  it models the variation between the edges
+       that are multiple clock cycles apart.
+
+       Duty-cycle jitter models the variation between the edges that are  out-
+       of-phase.   In  other  words, they are 0.5, 1.5, 2.5, and so on, cycles
+       apart.
+
+       Duty-cycle jitter and cycle-to-cycle jitter are  realized  between  the
+       launch  clock  and  the  capture clock that are both generated from the
+       same master clock.  To figure out the right clock jitter value  between
+       the  launch  clock  and capture clock, we trace the launch edge and the
+       capture edge to corresponding edges of  the  master  clock.  There  are
+       three cases to consider:
+
+       1.  If  the corresponding edges of the master clock are multiple cycles
+         apart.
+            cycle-to-cycle jitter is realized.
+       2. If they are not and integral number of cycles apart.
+            duty-cycle jitter is realized.
+       3. If they are traced back to the same edge of the master clock.
+            no clock jitter is realized.
+
+       In crosstalk analysis, clock jitter does not change the arrival windows
+       used  in  overlap  analysis. However, in level-sensitive latch designs,
+       latches can start borrowing in the presence of clock jitter, leading to
+       changes  in  delta  delays  for  logic  nets  in the fanout of affected
+       latches.
+
+       Please note that the generated clocks  defined  with  the  -multiply_by
+       option do not inherit the clock jitter from their master clocks.
+
+       To  remove  the  clock jitters set by the set_clock_jitter command, use
+       the remove_clock_jitter command.
+
+       To view clock jitter information, use the report_clock_jitter command.
+
+EXAMPLES
+       The following example specifies a  cycle-to-cycle  jitter  of  0.5  and
+       duty-cycle jitter of 0.7 on the clock mclk
+
+         prompt> set_clock_jitter -clock [get_clocks mclk] -cycle 0.5 -duty_cycle 0.7
+
+SEE ALSO
+       remove_clock_jitter(2)
+       report_clock_jitter(2)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.

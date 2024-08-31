@@ -1,0 +1,3 @@
+current_design - gives the name of the top module of the current loaded design
+
+regexp <string1> <string2> - compares the 2 strings and gives 1 if both are the same
